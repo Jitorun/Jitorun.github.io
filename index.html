@@ -31,6 +31,7 @@
 <meta property="og:description" content="Vegetable chicken">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Jitorun">
+<meta property="article:tag" content="GOGOGO">
 <meta name="twitter:card" content="summary">
 
 
@@ -127,9 +128,6 @@
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tags fa-fw"></i>标签</a></li>
         <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
-        <li class="menu-item menu-item-schedule"><a href="/schedule/" rel="section"><i class="calendar fa-fw"></i>日程表</a></li>
-        <li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="sitemap fa-fw"></i>站点地图</a></li>
-        <li class="menu-item menu-item-commonweal"><a href="/404/" rel="section"><i class="heartbeat fa-fw"></i>公益 404</a></li>
   </ul>
 </nav>
 
@@ -173,12 +171,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -212,6 +210,85 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2020/12/06/Java%E7%9A%84==%E4%B8%8Eequal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jitorun">
+      <meta itemprop="description" content="Vegetable chicken">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jitorun's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/12/06/Java%E7%9A%84==%E4%B8%8Eequal/" class="post-title-link" itemprop="url">Java的==与equal</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-12-06 00:31:41 / 修改时间：01:03:45" itemprop="dateCreated datePublished" datetime="2020-12-06T00:31:41+08:00">2020-12-06</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="equals介绍"><a href="#equals介绍" class="headerlink" title="equals介绍"></a>equals介绍</h1><ul>
+<li><strong>JAVA当中所有的类都是继承于Object这个超类的，在Object类中定义了一个equals的方法，这个方法的初始行为是比较对象的内存地址，但在一些类库当中这个方法被复写了，如String、Integer、Date。在这些类当中equals有其自身的实现，而不再是比较类在堆内存中的存放地址了。</strong></li>
+<li><strong>所以说，对于复合数据类型之间进行equals比较，在没有覆写equals方法的情况下，他们之间的比较还是内存中的存放位置的地址值，跟双等号（==）的结果相同；如果被重写，按照重写的要求来。</strong></li>
+<li><strong>总而言之，当equals没有被重写时，实际上就和==是等价的</strong></li>
+</ul>
+<h1 id="“-”介绍"><a href="#“-”介绍" class="headerlink" title="“==”介绍"></a>“==”介绍</h1><ul>
+<li><strong>基本数据类型中”==”的比较比较的是他们的值</strong></li>
+<li><strong>而在复合数据类型（类）中，比较的是他们在内存中的存放地址</strong></li>
+<li><strong>对于第二种类型，除非是同一个new出来的对象，他们的比较后的结果为true，否则比较后结果为false。因为每new一次，都会重新开辟堆内存空间。</strong></li>
+</ul>
+<ul>
+<li><strong>举例说明</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringDemo</span> </span>&#123;</span><br><span class="line">      <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">          String str1 = <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">          String str2 = <span class="keyword">new</span> String(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">          String str3 = str2; <span class="comment">// 引用传递</span></span><br><span class="line">          System.out.println(str1 == str2); <span class="comment">// false</span></span><br><span class="line">          System.out.println(str1 == str3); <span class="comment">// false</span></span><br><span class="line">          System.out.println(str2 == str3); <span class="comment">// true</span></span><br><span class="line">          System.out.println(str1.equals(str2)); <span class="comment">// true</span></span><br><span class="line">         System.out.println(str1.equals(str3)); <span class="comment">// true</span></span><br><span class="line">         System.out.println(str2.equals(str3)); <span class="comment">// true</span></span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>在上述第四行中，用”==”比较str1和str2，返回的结果却是false；而用“equals”比较str1和str2，返回的结果是true，而str3为str2的引用传递，此时”==”的结果就是true。</strong></p>
+<h1 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h1><h2 id="请解释字符串比较之中“-”和equals-的区别？"><a href="#请解释字符串比较之中“-”和equals-的区别？" class="headerlink" title="请解释字符串比较之中“==”和equals()的区别？"></a>请解释字符串比较之中“==”和equals()的区别？</h2><p><strong>“==”：比较的是两个字符串内存地址的数值是否相等，属于数值比较；</strong><br><strong>equals()：比较的是两个字符串的内容，属于内容比较。</strong><br><strong>以后进行字符串相等判断的时候都使用equals()。</strong><br><strong>注意这里说的是字符串比较中，equals其实已经重写了</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
