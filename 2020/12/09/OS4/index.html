@@ -23,15 +23,15 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"jitorun.top","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="第4章 进程调度与死锁作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算作业调度含义 按一定的策略从后备队列中选择一部分作业，为他们分配运行所需的必要资源，创建进程的过程  作业调度基本算法 先来先服务算法(FCFS) FCFS（First Come First Serviced) 按作业提交时间的先后顺序，调度时选择最先提交的作业 特点 公平合理 算法简单，容易实">
+<meta name="description" content="第4章 进程调度与死锁批处理系统中作业的四个状态 提交状态 后备状态 执行状态 完成状态  作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算作业调度含义 按一定的策略从后备队列中选择一部分作业，为他们分配运行所需的必要资源，创建进程的过程  作业调度基本算法 先来先服务算法(FCFS) FCFS（First Come First Serviced) 按作业提交时间">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OS第四章进程调度与死锁">
 <meta property="og:url" content="https://jitorun.top/2020/12/09/OS4/index.html">
 <meta property="og:site_name" content="Jitorun&#39;s Blog">
-<meta property="og:description" content="第4章 进程调度与死锁作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算作业调度含义 按一定的策略从后备队列中选择一部分作业，为他们分配运行所需的必要资源，创建进程的过程  作业调度基本算法 先来先服务算法(FCFS) FCFS（First Come First Serviced) 按作业提交时间的先后顺序，调度时选择最先提交的作业 特点 公平合理 算法简单，容易实">
+<meta property="og:description" content="第4章 进程调度与死锁批处理系统中作业的四个状态 提交状态 后备状态 执行状态 完成状态  作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算作业调度含义 按一定的策略从后备队列中选择一部分作业，为他们分配运行所需的必要资源，创建进程的过程  作业调度基本算法 先来先服务算法(FCFS) FCFS（First Come First Serviced) 按作业提交时间">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-12-09T10:49:42.778Z">
-<meta property="article:modified_time" content="2020-12-09T10:52:32.576Z">
+<meta property="article:modified_time" content="2020-12-11T09:10:02.033Z">
 <meta property="article:author" content="Jitorun">
 <meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary">
@@ -157,7 +157,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC4%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81"><span class="nav-number">1.</span> <span class="nav-text">第4章 进程调度与死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%EF%BC%9A%E5%90%AB%E4%B9%89%E3%80%81%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%EF%BC%88FCFS%EF%BC%8CSJF%EF%BC%8CHRN%EF%BC%89%E3%80%81%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E5%8F%8A%E5%B9%B3%E5%9D%87%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">1.1.</span> <span class="nav-text">作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%E5%90%AB%E4%B9%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">作业调度含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">作业调度基本算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%EF%BC%9A%E5%90%AB%E4%B9%89%E3%80%81%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%EF%BC%88FCFS%EF%BC%8CRR%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%EF%BC%89%E3%80%81%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E5%8F%8A%E5%B9%B3%E5%9D%87%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%90%AB%E4%B9%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">进程调度含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">进程调度基本算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%EF%BC%9A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E5%8F%8A%E5%85%B6%E7%89%B9%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">死锁：解决方法及其特点</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC4%E7%AB%A0-%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E4%B8%8E%E6%AD%BB%E9%94%81"><span class="nav-number">1.</span> <span class="nav-text">第4章 进程调度与死锁</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%B9%E5%A4%84%E7%90%86%E7%B3%BB%E7%BB%9F%E4%B8%AD%E4%BD%9C%E4%B8%9A%E7%9A%84%E5%9B%9B%E4%B8%AA%E7%8A%B6%E6%80%81"><span class="nav-number">1.1.</span> <span class="nav-text">批处理系统中作业的四个状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%EF%BC%9A%E5%90%AB%E4%B9%89%E3%80%81%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%EF%BC%88FCFS%EF%BC%8CSJF%EF%BC%8CHRN%EF%BC%89%E3%80%81%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E5%8F%8A%E5%B9%B3%E5%9D%87%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%E5%90%AB%E4%B9%89"><span class="nav-number">1.2.1.</span> <span class="nav-text">作业调度含义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E4%B8%9A%E8%B0%83%E5%BA%A6%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">作业调度基本算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%EF%BC%9A%E5%90%AB%E4%B9%89%E3%80%81%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95%EF%BC%88FCFS%EF%BC%8CRR%EF%BC%8C%E4%BC%98%E5%85%88%E7%BA%A7%EF%BC%89%E3%80%81%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E5%8F%8A%E5%B9%B3%E5%9D%87%E5%91%A8%E8%BD%AC%E6%97%B6%E9%97%B4%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">1.3.</span> <span class="nav-text">进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%90%AB%E4%B9%89%E5%8F%8A%E4%B8%A4%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">进程调度含义及两种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%B0%83%E5%BA%A6%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">进程调度基本算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%EF%BC%9A%E4%BA%A7%E7%94%9F%E5%8E%9F%E5%9B%A0%EF%BC%8C%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95%E5%8F%8A%E5%85%B6%E7%89%B9%E7%82%B9"><span class="nav-number">1.4.</span> <span class="nav-text">死锁：产生原因，解决方法及其特点</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -171,7 +171,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">7</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,10 +243,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2020-12-09 18:49:42 / 修改时间：18:52:32" itemprop="dateCreated datePublished" datetime="2020-12-09T18:49:42+08:00">2020-12-09</time>
+      <time title="创建时间：2020-12-09 18:49:42" itemprop="dateCreated datePublished" datetime="2020-12-09T18:49:42+08:00">2020-12-09</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-12-11 17:10:02" itemprop="dateModified" datetime="2020-12-11T17:10:02+08:00">2020-12-11</time>
+      </span>
 
   
 </div>
@@ -258,7 +264,13 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第4章-进程调度与死锁"><a href="#第4章-进程调度与死锁" class="headerlink" title="第4章 进程调度与死锁"></a>第4章 进程调度与死锁</h1><h2 id="作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算"><a href="#作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算" class="headerlink" title="作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算"></a>作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算</h2><h3 id="作业调度含义"><a href="#作业调度含义" class="headerlink" title="作业调度含义"></a>作业调度含义</h3><ul>
+        <h1 id="第4章-进程调度与死锁"><a href="#第4章-进程调度与死锁" class="headerlink" title="第4章 进程调度与死锁"></a>第4章 进程调度与死锁</h1><h2 id="批处理系统中作业的四个状态"><a href="#批处理系统中作业的四个状态" class="headerlink" title="批处理系统中作业的四个状态"></a>批处理系统中作业的四个状态</h2><ul>
+<li>提交状态</li>
+<li>后备状态</li>
+<li>执行状态</li>
+<li>完成状态</li>
+</ul>
+<h2 id="作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算"><a href="#作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算" class="headerlink" title="作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算"></a>作业调度：含义、基本算法（FCFS，SJF，HRN）、周转时间及平均周转时间的计算</h2><h3 id="作业调度含义"><a href="#作业调度含义" class="headerlink" title="作业调度含义"></a>作业调度含义</h3><ul>
 <li>按一定的策略从后备队列中选择一部分作业，为他们分配运行所需的必要资源，创建进程的过程</li>
 </ul>
 <h3 id="作业调度基本算法"><a href="#作业调度基本算法" class="headerlink" title="作业调度基本算法"></a>作业调度基本算法</h3><ul>
@@ -294,7 +306,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算"><a href="#进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算" class="headerlink" title="进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算"></a>进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算</h2><h3 id="进程调度含义"><a href="#进程调度含义" class="headerlink" title="进程调度含义"></a>进程调度含义</h3><ul>
+<h2 id="进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算"><a href="#进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算" class="headerlink" title="进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算"></a>进程调度：含义、基本算法（FCFS，RR，优先级）、周转时间及平均周转时间的计算</h2><h3 id="进程调度含义及两种方式"><a href="#进程调度含义及两种方式" class="headerlink" title="进程调度含义及两种方式"></a>进程调度含义及两种方式</h3><ul>
 <li>按一定策略从进程就绪队列中选择一个进程，让其占用处理器运行</li>
 <li>两种基本的进程调度方式<ul>
 <li>抢占方式：可以让运行中的进程停下来</li>
@@ -335,7 +347,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="死锁：解决方法及其特点"><a href="#死锁：解决方法及其特点" class="headerlink" title="死锁：解决方法及其特点"></a>死锁：解决方法及其特点</h2><ul>
+<h2 id="死锁：产生原因，解决方法及其特点"><a href="#死锁：产生原因，解决方法及其特点" class="headerlink" title="死锁：产生原因，解决方法及其特点"></a>死锁：产生原因，解决方法及其特点</h2><ul>
 <li>死锁产生的根本原因：系统拥有的资源数量小于各进程对资源的需求总数</li>
 <li>死锁的四个必要条件<ul>
 <li>互斥条件</li>
@@ -387,6 +399,9 @@
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/2020/12/09/OS5/" rel="next" title="OS第五章存储器管理">
+                  OS第五章存储器管理 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
