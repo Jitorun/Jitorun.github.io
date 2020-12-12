@@ -23,21 +23,21 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"jitorun.top","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="第2章 操作系统接口OS内核 内核主要组成 与硬件密切相关的操作 关键数据结构 基本中断处理程序 使用频繁的功能模块   内核的基本特点 常驻内存 可以理解成缓存，程序完成后仍保留在内存中，下次运行就不再需要从磁盘上读入内存   运行在核心态 内核程序运行在核心态      用户接口类型 命令接口 外部命令 如果一个命令对应一个独立的应用程序文件，这种命令称为外部命令   内部命令 由内核程序模块">
+<meta name="description" content="第6章 文件管理文件系统的主要功能 文件内容的组织 文件内容的组织形式分为文件的逻辑结构和物理结构 逻辑结构侧重方便用户使用 物理结构侧重提高存储空间的利用率与存取速度   文件和目录管理 文件存储空间管理 文件系统的接口 文件的共享与安全性  文件逻辑结构的分类 流式文件 文件内容按用户提供的数据顺序，以字符流方式组织，没有对内容进行结构上的划分   记录式文件 以数据在逻辑上的完整性含义为单位">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OS第二章操作系统接口">
-<meta property="og:url" content="https://jitorun.top/2020/12/08/OS2/index.html">
+<meta property="og:title" content="OS第六章文件管理">
+<meta property="og:url" content="https://jitorun.top/2020/12/12/OS6/index.html">
 <meta property="og:site_name" content="Jitorun&#39;s Blog">
-<meta property="og:description" content="第2章 操作系统接口OS内核 内核主要组成 与硬件密切相关的操作 关键数据结构 基本中断处理程序 使用频繁的功能模块   内核的基本特点 常驻内存 可以理解成缓存，程序完成后仍保留在内存中，下次运行就不再需要从磁盘上读入内存   运行在核心态 内核程序运行在核心态      用户接口类型 命令接口 外部命令 如果一个命令对应一个独立的应用程序文件，这种命令称为外部命令   内部命令 由内核程序模块">
+<meta property="og:description" content="第6章 文件管理文件系统的主要功能 文件内容的组织 文件内容的组织形式分为文件的逻辑结构和物理结构 逻辑结构侧重方便用户使用 物理结构侧重提高存储空间的利用率与存取速度   文件和目录管理 文件存储空间管理 文件系统的接口 文件的共享与安全性  文件逻辑结构的分类 流式文件 文件内容按用户提供的数据顺序，以字符流方式组织，没有对内容进行结构上的划分   记录式文件 以数据在逻辑上的完整性含义为单位">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-08T11:10:41.328Z">
-<meta property="article:modified_time" content="2020-12-11T17:25:55.196Z">
+<meta property="article:published_time" content="2020-12-12T11:50:22.070Z">
+<meta property="article:modified_time" content="2020-12-12T12:35:46.759Z">
 <meta property="article:author" content="Jitorun">
 <meta property="article:tag" content="OS">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://jitorun.top/2020/12/08/OS2/">
+<link rel="canonical" href="https://jitorun.top/2020/12/12/OS6/">
 
 
 <script class="page-configurations">
@@ -49,7 +49,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>OS第二章操作系统接口 | Jitorun's Blog</title>
+<title>OS第六章文件管理 | Jitorun's Blog</title>
   
 
 
@@ -160,7 +160,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC2%E7%AB%A0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">第2章 操作系统接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OS%E5%86%85%E6%A0%B8"><span class="nav-number">1.1.</span> <span class="nav-text">OS内核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">用户接口类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%90%AB%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text">系统调用含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E4%B8%8E%E7%94%A8%E6%88%B7%E5%AD%90%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%88%AB"><span class="nav-number">1.4.</span> <span class="nav-text">系统调用与用户子程序的主要区别</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC6%E7%AB%A0-%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">第6章 文件管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.</span> <span class="nav-text">文件系统的主要功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E9%80%BB%E8%BE%91%E7%BB%93%E6%9E%84%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.2.</span> <span class="nav-text">文件逻辑结构的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E7%B1%BB%E6%96%87%E4%BB%B6%E7%89%A9%E7%90%86%E7%BB%93%E6%9E%84%E5%8F%8A%E5%85%B6%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">三类文件物理结构及其主要特点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UNIX%E5%A4%9A%E7%BA%A7%E7%B4%A2%E5%BC%95%E7%BB%93%E6%9E%84"><span class="nav-number">1.4.</span> <span class="nav-text">UNIX多级索引结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%BA%A7%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%8F%8A%E8%AE%BF%E9%97%AE%E8%BF%87%E7%A8%8B"><span class="nav-number">1.5.</span> <span class="nav-text">二级目录结构及访问过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%91%E7%8A%B6%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E3%80%81%E6%A0%B9%E7%9B%AE%E5%BD%95%E3%80%81%E8%B7%AF%E5%BE%84%E5%90%AB%E4%B9%89"><span class="nav-number">1.6.</span> <span class="nav-text">树状目录结构、根目录、路径含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BF%9D%E6%8A%A4%E3%80%81%E4%BF%9D%E5%AF%86%E7%9A%84%E5%90%AB%E4%B9%89%E5%8F%8A%E5%9F%BA%E4%BA%8E%E4%B8%BB%E4%BD%93%E6%9D%83%E9%99%90%E7%9A%84%E5%AD%98%E5%8F%96%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="nav-number">1.7.</span> <span class="nav-text">文件保护、保密的含义及基于主体权限的存取控制方式</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -231,7 +231,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2020/12/08/OS2/">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2020/12/12/OS6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -244,7 +244,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OS第二章操作系统接口
+          OS第六章文件管理
         </h1>
 
         <div class="post-meta-container">
@@ -254,16 +254,10 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-12-08 19:10:41" itemprop="dateCreated datePublished" datetime="2020-12-08T19:10:41+08:00">2020-12-08</time>
+      <time title="创建时间：2020-12-12 19:50:22 / 修改时间：20:35:46" itemprop="dateCreated datePublished" datetime="2020-12-12T19:50:22+08:00">2020-12-12</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-12-12 01:25:55" itemprop="dateModified" datetime="2020-12-12T01:25:55+08:00">2020-12-12</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -291,62 +285,134 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第2章-操作系统接口"><a href="#第2章-操作系统接口" class="headerlink" title="第2章 操作系统接口"></a>第2章 操作系统接口</h1><h2 id="OS内核"><a href="#OS内核" class="headerlink" title="OS内核"></a>OS内核</h2><ul>
-<li>内核主要组成<ul>
-<li>与硬件密切相关的操作</li>
-<li>关键数据结构</li>
-<li>基本中断处理程序</li>
-<li>使用频繁的功能模块</li>
+        <h1 id="第6章-文件管理"><a href="#第6章-文件管理" class="headerlink" title="第6章 文件管理"></a>第6章 文件管理</h1><h2 id="文件系统的主要功能"><a href="#文件系统的主要功能" class="headerlink" title="文件系统的主要功能"></a>文件系统的主要功能</h2><ul>
+<li>文件内容的组织<ul>
+<li>文件内容的组织形式分为文件的逻辑结构和物理结构</li>
+<li>逻辑结构侧重方便用户使用</li>
+<li>物理结构侧重提高存储空间的利用率与存取速度</li>
 </ul>
 </li>
-<li>内核的基本特点<ul>
-<li>常驻内存<ul>
-<li>可以理解成缓存，程序完成后仍保留在内存中，下次运行就不再需要从磁盘上读入内存</li>
+<li>文件和目录管理</li>
+<li>文件存储空间管理</li>
+<li>文件系统的接口</li>
+<li>文件的共享与安全性</li>
+</ul>
+<h2 id="文件逻辑结构的分类"><a href="#文件逻辑结构的分类" class="headerlink" title="文件逻辑结构的分类"></a>文件逻辑结构的分类</h2><ul>
+<li>流式文件<ul>
+<li>文件内容按用户提供的数据顺序，以字符流方式组织，没有对内容进行结构上的划分</li>
 </ul>
 </li>
-<li>运行在核心态<ul>
-<li>内核程序运行在核心态</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="用户接口类型"><a href="#用户接口类型" class="headerlink" title="用户接口类型"></a>用户接口类型</h2><ul>
-<li>命令接口<ul>
-<li>外部命令<ul>
-<li>如果一个命令对应一个独立的应用程序文件，这种命令称为外部命令</li>
-</ul>
-</li>
-<li>内部命令<ul>
-<li>由内核程序模块实现的命令称为内部命令</li>
+<li>记录式文件<ul>
+<li>以数据在逻辑上的完整性含义为单位划分文件内容，每个单位称为一个逻辑记录，简称记录，记录式文件的文件内容是若干个记录的有序集合</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>程序接口<ul>
-<li><strong>程序接口是通过系统调用来实现的</strong></li>
+<h2 id="三类文件物理结构及其主要特点"><a href="#三类文件物理结构及其主要特点" class="headerlink" title="三类文件物理结构及其主要特点"></a>三类文件物理结构及其主要特点</h2><ul>
+<li>连续结构<ul>
+<li>也称顺序结构，对于一个文件的所有记录，系统按照记录顺序，将它们存放在依次相邻的物理块上，创建或保存一个文件时，系统根据文件的记录数，从外存中查找块数不少于文件记录数的连续空闲物理块</li>
+<li>特点<ul>
+<li>管理简单</li>
+<li>存取速度快</li>
+<li>存储空间连续分配，存储空间利用率不高</li>
+<li>不方便文件内容的增加或删除</li>
 </ul>
 </li>
 </ul>
-<h2 id="系统调用含义"><a href="#系统调用含义" class="headerlink" title="系统调用含义"></a>系统调用含义</h2><ul>
-<li>系统调用含义<ul>
-<li>一组操作系统设计人员事先编写好的子程序，并作为内核的一部分</li>
-<li>程序员使用这组子程序的方法</li>
-</ul>
 </li>
-<li>关于系统调用的实现过程<ul>
-<li>（1）处理器切换为核心态，保护用户程序的现场</li>
-<li>（2）分析功能号并在地址入口表中查找对应的子程序，有时还需要进行安全控制检查</li>
-<li>（3）执行系统调用的子程序并得到结果</li>
-<li>（4）现场恢复，处理器切换为用户态并返回结果，必要时进行安全检查</li>
+<li>链接结构<ul>
+<li>指定物理块的一个固定存储单元，例如每个块最后一个存储单元，作为链表的指针，指向同一个文件内容存储的下一个物理块，并规定指针为空表示该文件的物理块链表结束</li>
+<li>特点<ul>
+<li>非连续的存储分配，提高了存储空间的利用率</li>
+<li>方便文件内容的增加或删除</li>
+<li>只适合顺序存取，存取速度慢</li>
+<li>指针信息造成物理块信息不完整，并导致数据无法控制</li>
 </ul>
 </li>
 </ul>
-<h2 id="系统调用与用户子程序的主要区别"><a href="#系统调用与用户子程序的主要区别" class="headerlink" title="系统调用与用户子程序的主要区别"></a>系统调用与用户子程序的主要区别</h2><ul>
-<li>系统调用运行在核心态，而用户子程序运行在用户态</li>
-<li>系统调用的执行产生中断，用户子程序的运行则不会产生中断</li>
-<li>系统调用子程序的代码与调用者的程序代码是分开独立的，而用户子程序代码与调用者的程序代码在同一个进程地址空间</li>
-<li>不同用户程序可以共享使用同一个系统调用，用户子程序通常不能由其他用户程序调用</li>
+</li>
+<li>索引结构<ul>
+<li>类似分页存储管理的页表一样，为外存储器上每一个文件建立一个索引表，登记了该文件的各个记录号（或主键）与物理块的对应关系</li>
+<li>特点<ul>
+<li>非连续的存储分配，提高了存储空间的利用率</li>
+<li>方便文件内容的增加或删除</li>
+<li>实现随机存取</li>
+<li>索引表占用额外的存储空间</li>
+<li>增加检索的开销</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="UNIX多级索引结构"><a href="#UNIX多级索引结构" class="headerlink" title="UNIX多级索引结构"></a>UNIX多级索引结构</h2><ul>
+<li>UNIX把索引表分成4级，称为多级索引结构</li>
+<li>UNIX中，每个文件都有一个数据结构，称为i-node，在i-node中定义了13个表项，记为i_addr[0]、i_addr[1]、…、i_addr[12]<ul>
+<li>其中i_addr[0]~i_addr[9]的10个表项称为直接索引表</li>
+<li>i_addr[10]为一次间接指针，指向保存一次间接索引表的物理块</li>
+<li>i_addr[11]为二次间接指针，指向保存二次间接索引表的物理块</li>
+<li>i_addr[12]为三次间接指针，指向保存三次间接索引表的物理块</li>
+</ul>
+</li>
+<li>假定物理块长度为4KB，每个物理块号用4B表示<ul>
+<li>这样对于直接索引表等级文件内容存储的前十个物理块，对于文件内容不超过40KB的小文件，只需要i-node直接索引表的10个表项就可以了</li>
+<li>当文件内容超40KB时，使用一次间接索引表，一次间接索引表保存文件内容占用的各个物理块号，一个表项表示一个物理块号，占4B，所以一次间接索引表可以表示4KB/4B=1K即1024物理块，文件内容合计为4KB X 1024=4MB，在文件长度超过40KB而小于或等于40KB+4MB时，利用直接索引表和一次间接索引表可以实现对文件的管理</li>
+<li>同理，二级索引表就是4GB，三级为4TB</li>
+</ul>
+</li>
+<li><strong>理论上最大可达40KB+4MB+4GB+4TB（针对上述数据）</strong></li>
+</ul>
+<h2 id="二级目录结构及访问过程"><a href="#二级目录结构及访问过程" class="headerlink" title="二级目录结构及访问过程"></a>二级目录结构及访问过程</h2><ul>
+<li>二级目录结构把目录分为两级：用户文件目录(UFD)和系统主目录(MFD)</li>
+<li>访问过程<ul>
+<li>按照用户名查找系统主目录，得到用户文件目录，接着按照文件名查找用户文件目录，得到文件的FCB，从而得到文件在外存中的存储位置</li>
+</ul>
+</li>
+</ul>
+<h2 id="树状目录结构、根目录、路径含义"><a href="#树状目录结构、根目录、路径含义" class="headerlink" title="树状目录结构、根目录、路径含义"></a>树状目录结构、根目录、路径含义</h2><ul>
+<li>根目录<ul>
+<li>根目录由系统自动建成，用户不能创建或删除</li>
+</ul>
+</li>
+<li>现代操作系统都支持树状目录结构</li>
+<li>“.”和”..”分别表示当前目录及其父目录</li>
+</ul>
+<h2 id="文件保护、保密的含义及基于主体权限的存取控制方式"><a href="#文件保护、保密的含义及基于主体权限的存取控制方式" class="headerlink" title="文件保护、保密的含义及基于主体权限的存取控制方式"></a>文件保护、保密的含义及基于主体权限的存取控制方式</h2><ul>
+<li>文件保护<ul>
+<li>含义<ul>
+<li>防止文件内容被破坏，这种破坏指存储介质的物理损坏导致文件内容无法读取和用户的误操作造成文件内容的丢失</li>
+</ul>
+</li>
+<li>措施<ul>
+<li>备份与恢复两种措施</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文件保密<ul>
+<li>含义<ul>
+<li>文件保密是对文件存取的控制，防止文件的非法访问</li>
+</ul>
+</li>
+<li><strong>文件系统安全的核心是实现文件的保密</strong></li>
+</ul>
+</li>
+<li>基于主体权限的存取控制方式<ul>
+<li>根据主体对客体所拥有的访问属性而进行存取控制，因此属于自主访问策略（DAC)</li>
+<li>主体权限的管理方法主要由三种：存取控制矩阵(PM)，访问控制表(ACL)，权能表(CL)</li>
+<li>存取控制矩阵<ul>
+<li>行表示主体，列表示客体</li>
+<li>存取控制矩阵中可能存在大量的空元素或0</li>
+</ul>
+</li>
+<li>存取控制表<ul>
+<li>是存取控制矩阵的一种简化，为每个客体按列建立一个列表，用于登记可访问的各个用户及其访问属性</li>
+</ul>
+</li>
+<li>权能表<ul>
+<li>是存取控制矩阵的另一种简化，每个主体按行建立一个列表</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -364,13 +430,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/12/08/OS1/" rel="prev" title="OS第一章引论">
-                  <i class="fa fa-chevron-left"></i> OS第一章引论
+                <a href="/2020/12/09/OS5/" rel="prev" title="OS第五章存储器管理">
+                  <i class="fa fa-chevron-left"></i> OS第五章存储器管理
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/12/08/OS3/" rel="next" title="OS第三章进程管理">
-                  OS第三章进程管理 <i class="fa fa-chevron-right"></i>
+                <a href="/2020/12/12/OS7/" rel="next" title="OS第七章设备管理">
+                  OS第七章设备管理 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
