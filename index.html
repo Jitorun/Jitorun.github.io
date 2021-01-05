@@ -171,7 +171,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -218,6 +218,101 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2021/01/05/java_list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jitorun">
+      <meta itemprop="description" content="Vegetable chicken">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jitorun's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/01/05/java_list/" class="post-title-link" itemprop="url">Java的List</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-01-05 19:23:13 / 修改时间：19:28:30" itemprop="dateCreated datePublished" datetime="2021-01-05T19:23:13+08:00">2021-01-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Java学习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="List用法"><a href="#List用法" class="headerlink" title="List用法"></a>List用法</h1><h2 id="List接口定义常用方法"><a href="#List接口定义常用方法" class="headerlink" title="List接口定义常用方法"></a>List接口定义常用方法</h2><ul>
+<li><p>List接口是继承Collection接口，所以Collection集合中有的方法，List集合也继承过来。</p>
+</li>
+<li><p>List接口的常用实现类有ArrayList和LinkedList，在使用List集合时，通常情况下声明为List类型，实例化时根据实际情况的需要，实例化为ArrayList或LinkedList，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; res1 &#x3D; new ArrayList&lt;String&gt;();&#x2F;&#x2F; 利用ArrayList类实例化List集合</span><br><span class="line">List&lt;String&gt; res2 &#x3D; new LinkedList&lt;String&gt;();&#x2F;&#x2F; 利用LinkedList类实例化List集合</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>add用法</p>
+<ul>
+<li>void add(int index, E element)<ul>
+<li>index为插入的位置，element为插入内容，没有指定插入位置时，默认从尾部添加</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Arraylist.aslist</p>
+<ul>
+<li>Java中使用Arrays.asList初始化ArrayList</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">以下为LeetCode的例题</span><br><span class="line"></span><br><span class="line">#830</span><br><span class="line">在一个由小写字母构成的字符串 s 中，包含由一些连续的相同字符所构成的分组。</span><br><span class="line">例如，在字符串 s &#x3D; &quot;abbxxxxzyy&quot;中，就含有 &quot;a&quot;, &quot;bb&quot;, &quot;xxxx&quot;, &quot;z&quot; 和 &quot;yy&quot; 这样的一些分组。</span><br><span class="line">分组可以用区间 [start, end] 表示，其中 start 和 end 分别表示该分组的起始和终止位置的下标。上例中的 &quot;xxxx&quot; 分组用区间表示为 [3,6] 。</span><br><span class="line">我们称所有包含大于或等于三个连续字符的分组为 较大分组 。</span><br><span class="line">找到每一个 较大分组 的区间，按起始位置下标递增顺序排序后，返回结果。</span><br><span class="line">来源：力扣（LeetCode）</span><br><span class="line">链接：https:&#x2F;&#x2F;leetcode-cn.com&#x2F;problems&#x2F;positions-of-large-groups</span><br><span class="line">*&#x2F;</span><br><span class="line">class Solution &#123;</span><br><span class="line">    public List&lt;List&lt;Integer&gt;&gt; largeGroupPositions(String s) &#123;</span><br><span class="line">            List&lt;List&lt;Integer&gt;&gt; res &#x3D; new ArrayList&lt;List&lt;Integer&gt;&gt;();</span><br><span class="line">        int count&#x3D;1;</span><br><span class="line">        for (int i &#x3D; 0; i &lt; s.length(); i++) &#123;</span><br><span class="line">            if ((i&#x3D;&#x3D;s.length()-1)||s.charAt(i)!&#x3D;s.charAt(i+1))&#123;</span><br><span class="line">                if (count&gt;&#x3D;3)&#123;</span><br><span class="line">                    res.add(Arrays.asList(i-count+1,i));</span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">                count&#x3D;1;    </span><br><span class="line">            &#125;</span><br><span class="line">            else </span><br><span class="line">                count++;</span><br><span class="line">        &#125;</span><br><span class="line">        return res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="后续学习继续更新"><a href="#后续学习继续更新" class="headerlink" title="后续学习继续更新"></a>后续学习继续更新</h1>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1813,7 +1908,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
