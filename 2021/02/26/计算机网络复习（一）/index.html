@@ -23,21 +23,21 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"jitorun.top","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="第7章 设备管理分类(按数据组织方式、固有属性的分类原则) 按设备的数据组织分类 字符设备 块设备   按设备的固有属性分类 独占设备 共享设备    设备独立性含义 用户或程序中使用的设备与具体的物理设备无关，用户或程序使用的是逻辑设备，当进程运行时，由操作系统在逻辑设备与物理设备之间建立连接，即设备的分配，把这种设备使用方法的特点称为设备独立性  I&#x2F;O控制方式 程序查询方式 在执行一个进程的">
+<meta name="description" content="计算机网络复习（一）IP地址的分类 A类地址:以0为开头，第一个字节范围1-126（1.0.0.0-126.255.255.255)  B类地址:以10为开头，第一个字节范围128-191  C类地址:以110为开头，第一个字节范围192-223  D类地址:以1110为开头，第一个字节范围224-239（作为多播使用）  E类地址：保留  IP地址与子网掩码相与得到网络号  主机号全为0的为网络">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OS第七章设备管理">
-<meta property="og:url" content="https://jitorun.top/2020/12/12/OS7/index.html">
+<meta property="og:title" content="计算机网络复习（一）">
+<meta property="og:url" content="https://jitorun.top/2021/02/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jitorun&#39;s Blog">
-<meta property="og:description" content="第7章 设备管理分类(按数据组织方式、固有属性的分类原则) 按设备的数据组织分类 字符设备 块设备   按设备的固有属性分类 独占设备 共享设备    设备独立性含义 用户或程序中使用的设备与具体的物理设备无关，用户或程序使用的是逻辑设备，当进程运行时，由操作系统在逻辑设备与物理设备之间建立连接，即设备的分配，把这种设备使用方法的特点称为设备独立性  I&#x2F;O控制方式 程序查询方式 在执行一个进程的">
+<meta property="og:description" content="计算机网络复习（一）IP地址的分类 A类地址:以0为开头，第一个字节范围1-126（1.0.0.0-126.255.255.255)  B类地址:以10为开头，第一个字节范围128-191  C类地址:以110为开头，第一个字节范围192-223  D类地址:以1110为开头，第一个字节范围224-239（作为多播使用）  E类地址：保留  IP地址与子网掩码相与得到网络号  主机号全为0的为网络">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-12T12:37:42.602Z">
-<meta property="article:modified_time" content="2020-12-12T13:21:18.465Z">
+<meta property="article:published_time" content="2021-02-26T05:22:34.733Z">
+<meta property="article:modified_time" content="2021-02-26T05:34:24.435Z">
 <meta property="article:author" content="Jitorun">
-<meta property="article:tag" content="OS">
+<meta property="article:tag" content="计算机网络">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://jitorun.top/2020/12/12/OS7/">
+<link rel="canonical" href="https://jitorun.top/2021/02/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/">
 
 
 <script class="page-configurations">
@@ -49,7 +49,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>OS第七章设备管理 | Jitorun's Blog</title>
+<title>计算机网络复习（一） | Jitorun's Blog</title>
   
 
 
@@ -160,7 +160,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC7%E7%AB%A0-%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">第7章 设备管理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E7%B1%BB-%E6%8C%89%E6%95%B0%E6%8D%AE%E7%BB%84%E7%BB%87%E6%96%B9%E5%BC%8F%E3%80%81%E5%9B%BA%E6%9C%89%E5%B1%9E%E6%80%A7%E7%9A%84%E5%88%86%E7%B1%BB%E5%8E%9F%E5%88%99"><span class="nav-number">1.1.</span> <span class="nav-text">分类(按数据组织方式、固有属性的分类原则)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E7%8B%AC%E7%AB%8B%E6%80%A7%E5%90%AB%E4%B9%89"><span class="nav-number">1.2.</span> <span class="nav-text">设备独立性含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">I&#x2F;O控制方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#I-O%E7%BC%93%E5%86%B2%E5%90%AB%E4%B9%89%E4%B8%8E%E7%9B%AE%E7%9A%84"><span class="nav-number">1.4.</span> <span class="nav-text">I&#x2F;O缓冲含义与目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E5%A4%87%E5%88%86%E9%85%8D%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.5.</span> <span class="nav-text">设备分配相关数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E9%A9%B1%E5%8A%A8%E8%B0%83%E5%BA%A6%E7%BB%84%E6%88%90"><span class="nav-number">1.6.</span> <span class="nav-text">磁盘驱动调度组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E8%87%82%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">1.7.</span> <span class="nav-text">移臂调度算法</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">计算机网络复习（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IP%E5%9C%B0%E5%9D%80%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">IP地址的分类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ARP%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.</span> <span class="nav-text">ARP工作原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%92%8C%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%9A%84%E5%85%A8%E8%BF%87%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">TCP三次握手和四次挥手的全过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">三次握手</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="nav-number">1.3.2.</span> <span class="nav-text">四次挥手</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%AD%E8%BE%93%E5%85%A5www-baidu-com%E5%90%8E%E6%89%A7%E8%A1%8C%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="nav-number">1.4.</span> <span class="nav-text">在浏览器中输入www.baidu.com后执行的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP%E5%92%8CUDP%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.5.</span> <span class="nav-text">TCP和UDP的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNS%E5%9F%9F%E5%90%8D%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">1.6.</span> <span class="nav-text">DNS域名系统工作原理</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -231,7 +231,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2020/12/12/OS7/">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2021/02/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%A4%8D%E4%B9%A0%EF%BC%88%E4%B8%80%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -244,7 +244,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OS第七章设备管理
+          计算机网络复习（一）
         </h1>
 
         <div class="post-meta-container">
@@ -256,7 +256,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2020-12-12 20:37:42 / 修改时间：21:21:18" itemprop="dateCreated datePublished" datetime="2020-12-12T20:37:42+08:00">2020-12-12</time>
+      <time title="创建时间：2021-02-26 13:22:34 / 修改时间：13:34:24" itemprop="dateCreated datePublished" datetime="2021-02-26T13:22:34+08:00">2021-02-26</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -264,7 +264,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">课程复习</span></a>
+          <a href="/categories/%E5%9F%BA%E7%A1%80%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">基础复习</span></a>
         </span>
     </span>
 
@@ -285,90 +285,72 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第7章-设备管理"><a href="#第7章-设备管理" class="headerlink" title="第7章 设备管理"></a>第7章 设备管理</h1><h2 id="分类-按数据组织方式、固有属性的分类原则"><a href="#分类-按数据组织方式、固有属性的分类原则" class="headerlink" title="分类(按数据组织方式、固有属性的分类原则)"></a>分类(按数据组织方式、固有属性的分类原则)</h2><ul>
-<li>按设备的数据组织分类<ul>
-<li>字符设备</li>
-<li>块设备</li>
-</ul>
+        <h1 id="计算机网络复习（一）"><a href="#计算机网络复习（一）" class="headerlink" title="计算机网络复习（一）"></a>计算机网络复习（一）</h1><h2 id="IP地址的分类"><a href="#IP地址的分类" class="headerlink" title="IP地址的分类"></a>IP地址的分类</h2><ul>
+<li><p>A类地址:以0为开头，第一个字节范围1-126（1.0.0.0-126.255.255.255)</p>
 </li>
-<li>按设备的固有属性分类<ul>
-<li>独占设备</li>
-<li>共享设备</li>
-</ul>
+<li><p>B类地址:以10为开头，第一个字节范围128-191</p>
 </li>
-</ul>
-<h2 id="设备独立性含义"><a href="#设备独立性含义" class="headerlink" title="设备独立性含义"></a>设备独立性含义</h2><ul>
-<li>用户或程序中使用的设备与具体的物理设备无关，用户或程序使用的是逻辑设备，当进程运行时，由操作系统在逻辑设备与物理设备之间建立连接，即设备的分配，把这种设备使用方法的特点称为设备独立性</li>
-</ul>
-<h2 id="I-O控制方式"><a href="#I-O控制方式" class="headerlink" title="I/O控制方式"></a>I/O控制方式</h2><ul>
-<li>程序查询方式<ul>
-<li>在执行一个进程的I/O操作时，处理器循环测试设备状态，状态为空闲时，处理器向设备控制器提交I/O操作，之后不断检查设备的标志寄存器，只有检查发现I/O操作完成后才执行后续指令</li>
-</ul>
+<li><p>C类地址:以110为开头，第一个字节范围192-223</p>
 </li>
-<li>中断方式<ul>
-<li>某一事件的出现，要求处理器暂停当前进程的运行，而转向处理出现的事件，处理器完成该事件后才能继续原来的进程</li>
-</ul>
+<li><p>D类地址:以1110为开头，第一个字节范围224-239（<strong>作为多播使用</strong>）</p>
 </li>
-<li>DMA方式<ul>
-<li>对于块设备的I/O操作，采用中断方式时，处理器的利用率将受很大影响，采用DMA可以避免</li>
-<li>DMA方式也称为直接存储器存取，通过硬件即DMA控制器，实现存储器与设备，设备与设备之间的数据传输，不需要处理器参与，可以实现大批量数据的快速传输</li>
-</ul>
+<li><p>E类地址：保留</p>
 </li>
-<li>通道方式<ul>
-<li>DMA传输速度快，减少了处理器中断次数，但是因为DMA与处理器共享系统总线，影响了处理器利用率</li>
-<li>对于大型计算机系统和现代微处理器，可以提供专用I/O处理机，即通道方式实现I/O操作</li>
-</ul>
+<li><p><strong>IP地址与子网掩码相与得到网络号</strong></p>
+</li>
+<li><p>主机号全为0的为网络号(eg:192.168.2.0)，全为1的为广播地址（eg：192.168.2.255）</p>
 </li>
 </ul>
-<h2 id="I-O缓冲含义与目的"><a href="#I-O缓冲含义与目的" class="headerlink" title="I/O缓冲含义与目的"></a>I/O缓冲含义与目的</h2><ul>
-<li>含义<ul>
-<li>在设备的I/O操作中，利用一种存储部件或其中的部分，暂时存放要交换的数据，将来再把数据传输到目标位置，这种数据暂存的技术称为缓冲技术</li>
+<h2 id="ARP工作原理"><a href="#ARP工作原理" class="headerlink" title="ARP工作原理"></a>ARP工作原理</h2><ul>
+<li>ARP是地址解析协议</li>
+<li>首先每个主机都会在自己的ARP缓冲区建立一个ARP列表，用来表示IP地址和MAC地址（硬件地址）之间的对应关系</li>
+<li>当源主机要发送数据时，首先就会检查ARP列表里有没有对应的IP地址的目的主机的MAC地址，有就可直接发送数据，如果没有，向本网段所有主机发送ARP数据包（<strong>包括源主机IP地址，源主机MAC地址，目的主机IP地址</strong>）</li>
+<li>当本网段所欲主机收到ARP数据包时，先检查包中的IP地址是不是自己的，如果是，则先从包中取出源主机的IP和MAC地址写入到自己的ARP列表中，如果已经有了就覆盖，然后将自己的MAC地址写入ARP响应包，告诉源主机自己是它寻找的MAC地址，如果不是，则忽略数据包。</li>
+<li>源主机收到ARP响应包时，将目的主机IP和MAC写入ARP列表，并利用这信息发送数据，如果源主机一直没有收到ARP响应包，则表示ARP查询失败。</li>
 </ul>
-</li>
-<li>目的<ul>
-<li>缓解设备和处理器之间速度不匹配的矛盾，提高系统工作的并行程度</li>
-<li>减少I/O操作的次数</li>
-<li>减少中断次数</li>
-<li>提高系统及时性，方便用户操作</li>
+<h2 id="TCP三次握手和四次挥手的全过程"><a href="#TCP三次握手和四次挥手的全过程" class="headerlink" title="TCP三次握手和四次挥手的全过程"></a>TCP三次握手和四次挥手的全过程</h2><h3 id="三次握手"><a href="#三次握手" class="headerlink" title="三次握手"></a>三次握手</h3><ul>
+<li>第一次握手：客户端发送syn包（syn=1，seq=x）到服务器，并进入到SYN_SENT状态，等待服务器确认</li>
+<li>第二次握手：服务器收到syn包，先确认客户的SYN（ack=x+1），自己也发送一个SYN包（seq=y），也就是发送SYN+ACK包，此时服务器进入SYN_RECV状态</li>
+<li>第三次握手：客户端收到服务器的SYN+ACK包后向服务器发送确认包ACK（ack=y+1），此包发送完毕，客户端和服务器进入ESTABLISHED状态，完成三次握手</li>
 </ul>
-</li>
+<h3 id="四次挥手"><a href="#四次挥手" class="headerlink" title="四次挥手"></a>四次挥手</h3><ul>
+<li>第一次挥手：主动关闭方发送一个FIN，用来关闭主动方到被动关闭方的数据传送（<strong>此时主动关闭方还可以接受数据</strong>）</li>
+<li>第二次挥手：被动关闭方收到FIN包后，发送一个ACK到队方，确认序号为收到序号+1（<strong>FIN会占用一个序号</strong>）</li>
+<li>第三次挥手：被动关闭方发送一个FIN，用来关闭被动关闭方到主动关闭方的数据传送</li>
+<li>第四次挥手：主动关闭方收到FIN后，发送一个ACK给被动关闭方，确认序号为收到序号+1，至此，完成四次挥手</li>
 </ul>
-<h2 id="设备分配相关数据结构"><a href="#设备分配相关数据结构" class="headerlink" title="设备分配相关数据结构"></a>设备分配相关数据结构</h2><ul>
-<li>系统设备表</li>
-<li>设备控制表</li>
-<li>控制器控制表</li>
-<li>通道控制表</li>
+<h2 id="在浏览器中输入www-baidu-com后执行的过程"><a href="#在浏览器中输入www-baidu-com后执行的过程" class="headerlink" title="在浏览器中输入www.baidu.com后执行的过程"></a>在浏览器中输入<a target="_blank" rel="noopener" href="http://www.baidu.com后执行的过程/">www.baidu.com后执行的过程</a></h2><ul>
+<li>浏览器获取输入的域名<a target="_blank" rel="noopener" href="http://www.baidu.com/">www.baidu.com</a></li>
+<li>浏览器向DNS请求解析<a target="_blank" rel="noopener" href="http://www.baidu.com的ip地址/">www.baidu.com的IP地址</a></li>
+<li>域名系统DNS解析出百度服务器的IP地址</li>
+<li>浏览器与服务器建立TCP连接（默认端口号80）</li>
+<li>浏览器发出HTTP请求，请求百度首页</li>
+<li>服务器通过HTTP相应把首页文件发送给浏览器</li>
+<li>TCP连接释放</li>
+<li>浏览器将首页文件解析，将Web页显示给用户</li>
 </ul>
-<h2 id="磁盘驱动调度组成"><a href="#磁盘驱动调度组成" class="headerlink" title="磁盘驱动调度组成"></a>磁盘驱动调度组成</h2><ul>
-<li>目的<ul>
-<li>对于一组磁盘I/O操作的请求，系统按一定策略依次为各个I/O操作的请求服务，使得完成这组磁盘I/O操作所花的时间尽可能小</li>
+<h2 id="TCP和UDP的区别"><a href="#TCP和UDP的区别" class="headerlink" title="TCP和UDP的区别"></a>TCP和UDP的区别</h2><ul>
+<li>TCP提供面向连接的可靠的数据流传输，而UDP提供的是非面向连接的不可靠的数据流传输</li>
+<li>TCP传输单位为TCP报文段，UDP为用户数据报</li>
+<li>TCP注重数据安全，UDP传输数据快，安全性一般</li>
+<li>TCP对应协议：</li>
+<li>FTP:文件传输协议，21端口</li>
+<li>SMTP：邮件传送协议，25端口</li>
+<li>POP3：与SMTP对应，用于接受邮件，110端口</li>
+<li>HTTP：超文本传输协议，从Web服务器传输超文本到本地浏览器的传送协议</li>
+<li>UDP对应协议：</li>
+<li>DNS：域名解析服务，将域名地址转换为IP地址，53端口</li>
+<li>SNMP：简单网络管理协议，用来管理网络设备，161端口</li>
+<li>TFTP，简单文件传输协议，69端口</li>
 </ul>
-</li>
-<li>由于同一个磁盘的每个I/O操作，存取一个物理块的时间大致相等，所以磁盘驱动调度时，通常不考虑传输时间T，并且把磁盘驱动调度分为<strong>移臂调度和旋转调度</strong>组成</li>
-</ul>
-<h2 id="移臂调度算法"><a href="#移臂调度算法" class="headerlink" title="移臂调度算法"></a>移臂调度算法</h2><ul>
-<li>FCFS（先来先服务）<ul>
-<li>按I/O操作请求提出的时间先后顺序，调度时选择最先提出的一个I/O操作请求</li>
-<li>FCFS移臂调度算法可能导致频繁改变磁头方向</li>
-<li>例如：假定某磁盘的一组I/O操作的访问提出的顺序依次是55、72、100、88、93、63（I/O操作请求所在的柱面号），当前磁盘位于90号。则服务顺序为90-55-72-100-88-93-63,移动距离35+17+28+12+5+27=124（跨越的柱面总数），其中磁头方向改变4次</li>
-</ul>
-</li>
-<li>SSTF（最短寻道时间优先算法）<ul>
-<li>按各请求所在的柱面，调度时选择距离当前磁头最近柱面的一个I/O操作请求</li>
-<li>按上述例子，服务顺序为90-88-93-100-72-66-55，移动距离2+5+7+28+6+11=59，其中磁头改变方向2次</li>
-</ul>
-</li>
-<li>扫描算法（SCAN）<ul>
-<li>磁头从着陆区启动后，从内向外方向扫描移动，达到最外层柱面后改变方向从外向内扫描，在扫描移动过程中总是选择当前磁头方向上距离最近柱面的I/O操作，为其服务</li>
-<li>例：假定某磁盘有256个柱面，当前磁头位于90号并且向柱面号小的方向移动，其余与上述例子相同，则服务顺序为90-88-72-66-55-0-93-100，移动距离190，磁头改变一次</li>
-</ul>
-</li>
-<li>电梯算法<ul>
-<li>是对扫描算法的一种改进，允许磁头中途改变方向</li>
-<li>在服务过程中总是选择当前磁头方向上最近柱面的I/O操作，在当前方向上没有I/O操作而反方向上有时，立刻改变方向，并选择距离当前磁头方向最近柱面的I/O操作</li>
-<li>如上述例子，服务顺序90-88-72-66-55-93-100，移动距离80，磁头改变一次</li>
-</ul>
-</li>
+<h2 id="DNS域名系统工作原理"><a href="#DNS域名系统工作原理" class="headerlink" title="DNS域名系统工作原理"></a>DNS域名系统工作原理</h2><ul>
+<li>查询浏览器和操作系统缓存</li>
+<li>请问本地域名服务器</li>
+<li>本地域名服务器没有命中缓存，则请求根域名服务器</li>
+<li>根域名服务器返回所查询域的主域名服务器</li>
+<li>本地域名服务器请求主域名服务器，获取该域名的名称服务器</li>
+<li>本地域名服务器向名称服务器请求域名-IP映射</li>
+<li>缓存解析结果</li>
 </ul>
 
     </div>
@@ -379,21 +361,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OS/" rel="tag"># OS</a>
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/12/12/OS6/" rel="prev" title="OS第六章文件管理">
-                  <i class="fa fa-chevron-left"></i> OS第六章文件管理
+                <a href="/2021/01/06/%E5%B9%B6%E6%9F%A5%E9%9B%86/" rel="prev" title="并查集学习">
+                  <i class="fa fa-chevron-left"></i> 并查集学习
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/01/05/java_list/" rel="next" title="Java的List">
-                  Java的List <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
