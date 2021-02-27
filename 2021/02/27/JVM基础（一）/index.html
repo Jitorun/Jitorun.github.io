@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Noto+Serif+SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"jitorun.top","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="JVM基础（一）Java虚拟机作用 Java虚拟机可以解析字节码文件的内容，并将其翻译为各操作系统能理解的机器码，Java 虚拟机与字节码文件（Class文件）绑定 事实上，Java虚拟机运行的是字节码文件，所以不一定只能运行Java代码，如果其他语言的代码能生成符合字节码规范的文件，也可以在Java虚拟机上运行  JVM中的编译器 前端编译器：最常见的就是javac编译器，将Java源代码编译为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM基础（一)">
+<meta property="og:url" content="https://jitorun.top/2021/02/27/JVM%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/index.html">
+<meta property="og:site_name" content="Jitorun&#39;s Blog">
+<meta property="og:description" content="JVM基础（一）Java虚拟机作用 Java虚拟机可以解析字节码文件的内容，并将其翻译为各操作系统能理解的机器码，Java 虚拟机与字节码文件（Class文件）绑定 事实上，Java虚拟机运行的是字节码文件，所以不一定只能运行Java代码，如果其他语言的代码能生成符合字节码规范的文件，也可以在Java虚拟机上运行  JVM中的编译器 前端编译器：最常见的就是javac编译器，将Java源代码编译为">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-27T09:34:08.045Z">
+<meta property="article:modified_time" content="2021-02-27T09:58:44.078Z">
+<meta property="article:author" content="Jitorun">
+<meta property="article:tag" content="JVM">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://jitorun.top/2021/02/27/JVM%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>JVM基础（一) | Jitorun's Blog</title>
+  
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Jitorun's Blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Vegetable chicken</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="tag fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">JVM基础（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">Java虚拟机作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM%E4%B8%AD%E7%9A%84%E7%BC%96%E8%AF%91%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">JVM中的编译器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E8%8A%82%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">字节码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84"><span class="nav-number">1.4.</span> <span class="nav-text">Java虚拟机内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E6%9C%89%E9%83%A8%E5%88%86%EF%BC%9AJava%E5%A0%86%EF%BC%8C%E6%96%B9%E6%B3%95%E5%8C%BA%EF%BC%8C%E5%B8%B8%E9%87%8F%E6%B1%A0"><span class="nav-number">1.4.1.</span> <span class="nav-text">公有部分：Java堆，方法区，常量池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%81%E6%9C%89%E9%83%A8%E5%88%86%EF%BC%9APC%E5%AF%84%E5%AD%98%E5%99%A8%EF%BC%8CJava%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88%EF%BC%8C%E6%9C%AC%E5%9C%B0%E6%96%B9%E6%B3%95%E6%A0%88"><span class="nav-number">1.4.2.</span> <span class="nav-text">私有部分：PC寄存器，Java虚拟机栈，本地方法栈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">1.5.</span> <span class="nav-text">JVM类加载机制</span></a></li></ol></li></ol></div>
+        </section>
+        <!--/noindex-->
+
+        <section class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jitorun</p>
+  <div class="site-description" itemprop="description">Vegetable chicken</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Jitorun" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Jitorun" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+        </section>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2021/02/27/JVM%E5%9F%BA%E7%A1%80%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jitorun">
+      <meta itemprop="description" content="Vegetable chicken">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jitorun's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JVM基础（一)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2021-02-27 17:34:08 / 修改时间：17:58:44" itemprop="dateCreated datePublished" datetime="2021-02-27T17:34:08+08:00">2021-02-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Java学习</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="JVM基础（一）"><a href="#JVM基础（一）" class="headerlink" title="JVM基础（一）"></a>JVM基础（一）</h1><h2 id="Java虚拟机作用"><a href="#Java虚拟机作用" class="headerlink" title="Java虚拟机作用"></a>Java虚拟机作用</h2><ul>
+<li>Java虚拟机可以解析字节码文件的内容，并将其翻译为各操作系统能理解的机器码，Java 虚拟机与字节码文件（Class文件）绑定</li>
+<li>事实上，Java虚拟机运行的是字节码文件，所以不一定只能运行Java代码，如果其他语言的代码能生成符合字节码规范的文件，也可以在Java虚拟机上运行</li>
+</ul>
+<h2 id="JVM中的编译器"><a href="#JVM中的编译器" class="headerlink" title="JVM中的编译器"></a>JVM中的编译器</h2><ul>
+<li>前端编译器：最常见的就是javac编译器，将Java源代码编译为Java字节码文件</li>
+<li>JIT编译器：将Java字节码编译为本地机器代码</li>
+<li>AOT编译器：将源代码直接编译为本地机器码</li>
+</ul>
+<h2 id="字节码"><a href="#字节码" class="headerlink" title="字节码"></a>字节码</h2><ul>
+<li>字节码文件结构是一组以8位字节为基础的二进制流，数据项目排列在Class文件中，中间无分隔符，有两种最基本的数据类型：无符号数和表</li>
+</ul>
+<h2 id="Java虚拟机内存结构"><a href="#Java虚拟机内存结构" class="headerlink" title="Java虚拟机内存结构"></a>Java虚拟机内存结构</h2><ul>
+<li>Java虚拟机内存结构可以分成公有和私有两部分（依据《Java虚拟机规范》）<ul>
+<li>公有部分指所有线程共享的部分，指Java堆，方法区，常量池</li>
+<li>私有部分是每个线程的私有数据，包括PC寄存器，Java虚拟机栈，本地方法栈</li>
+</ul>
+</li>
+</ul>
+<h3 id="公有部分：Java堆，方法区，常量池"><a href="#公有部分：Java堆，方法区，常量池" class="headerlink" title="公有部分：Java堆，方法区，常量池"></a>公有部分：Java堆，方法区，常量池</h3><ul>
+<li>Java堆指JVM划分出来的一块区域，专门用于<strong>实例对象的内存分配</strong>，几乎所有实例对象都在这里进行分配，极小部分属于栈上分配<ul>
+<li>Java堆会根据对象存活时间的不同分为年轻代和老年代，年轻代在经历指定次数的GC后，在下次GC时进入老年代</li>
+<li>Java堆进行区域划分的目的其实是提高回收效率，存活时间短的对象往往更多，而垃圾回收时不得不对所有内存进行扫描，但其实有一部分对象，它们存活时间很长，对他们进行扫描完全是浪费时间</li>
+</ul>
+</li>
+<li>方法区指存储Java类字节码数据的区域，存储了每个类的结构信息，如运行时常量池、字段、方法数据、构造方法等（常量池存放在方法区中）</li>
+</ul>
+<h3 id="私有部分：PC寄存器，Java虚拟机栈，本地方法栈"><a href="#私有部分：PC寄存器，Java虚拟机栈，本地方法栈" class="headerlink" title="私有部分：PC寄存器，Java虚拟机栈，本地方法栈"></a>私有部分：PC寄存器，Java虚拟机栈，本地方法栈</h3><ul>
+<li>PC寄存器：任意时刻，一条 Java 虚拟机线程只会执行一个方法的代码，而这个被线程执行的方法称为该线程的当前方法，其地址被存在 PC 寄存器中</li>
+<li>Java 虚拟机栈：这个栈与线程同时创建，用来存储栈帧，即存储局部变量与一些过程结果的地方</li>
+<li>本地方法栈： Java 虚拟机使用其他语言（例如 C 语言）来实现指令集解释器时，也会使用到本地方法栈</li>
+</ul>
+<h2 id="JVM类加载机制"><a href="#JVM类加载机制" class="headerlink" title="JVM类加载机制"></a>JVM类加载机制</h2><ul>
+<li>加载：代码数据加载到内存中</li>
+<li>验证：加载完毕后，会进行验证是否符合JVM字节码规范</li>
+<li><strong>准备</strong>：完成校验后，JVM 便会开始为类变量分配内存并初始化<ul>
+<li>内存分配的对象：Java 中的变量有「类变量」和「类成员变量」两种类型，「类变量」指的是被 static 修饰的变量，而其他所有类型的变量都属于「类成员变量」。在准备阶段，JVM 只会为「类变量」分配内存，而不会为「类成员变量」分配内存。「类成员变量」的内存分配需要等到初始化阶段才开始。</li>
+<li>初始化的类型：准备阶段会为类变量初始化，但是这里的初始化是指赋予该变量对应数据类型的零值<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在准备阶段如果一个变量是常量(static final修饰)，则会直接赋值用户希望的值，而不是0</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> test1=<span class="number">3</span>;<span class="comment">//准备阶段值为0</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> test2 = <span class="number">4</span>;<span class="comment">//准备阶段值为4</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*final修饰的类变量不会被改变</span></span><br><span class="line"><span class="comment">*而没有被修饰的类变量可能在初始化阶段或运行阶段发生变化</span></span><br><span class="line"><span class="comment">*所以也就没有必要在准备阶段就赋予所希望的值</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>解析:对引用进行解析</li>
+<li><strong>初始化</strong>：JVM 会根据语句执行顺序对类对象进行初始化<ul>
+<li>一般来说当 JVM 遇到下面 5 种情况的时候会触发初始化（<strong>需要使用时再回来看，不必硬背</strong>）：<ul>
+<li>遇到 new、getstatic、putstatic、invokestatic 这四条字节码指令时，如果类没有进行过初始化，则需要先触发其初始化。生成这4条指令的最常见的Java代码场景是：使用new关键字实例化对象的时候、读取或设置一个类的静态字段（被final修饰、已在编译器把结果放入常量池的静态字段除外）的时候，以及调用一个类的静态方法的时候。</li>
+<li>使用 java.lang.reflect 包的方法对类进行反射调用的时候，如果类没有进行过初始化，则需要先触发其初始化。</li>
+<li>当初始化一个类的时候，如果发现其父类还没有进行过初始化，则需要先触发其父类的初始化。</li>
+<li>当虚拟机启动时，用户需要指定一个要执行的主类（包含main()方法的那个类），虚拟机会先初始化这个主类。</li>
+<li>当使用 JDK1.7 动态语言支持时，如果一个 java.lang.invoke.MethodHandle实例最后的解析结果 REF_getstatic,REF_putstatic,REF_invokeStatic 的方法句柄，并且这个方法句柄所对应的类没有进行初始化，则需要先出触发其初始化。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>使用：JVM开始执行用户的程序代码</li>
+<li>卸载：JVM开始销毁创建的 Class 对象，最后负责运行的 JVM 也退出内存</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/JVM/" rel="tag"># JVM</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/26/Springboot%E5%8E%9F%E7%90%86%E5%88%9D%E6%8E%A2/" rel="prev" title="Springboot原理初探">
+                  <i class="fa fa-chevron-left"></i> Springboot原理初探
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/27/Java%E7%9A%84%E7%B1%BB%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F/" rel="next" title="Java的类执行顺序">
+                  Java的类执行顺序 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jitorun</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+</body>
+</html>
