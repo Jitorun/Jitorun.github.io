@@ -23,21 +23,21 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"jitorun.top","root":"/","images":"/images","scheme":"Gemini","version":"8.1.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="第2章 操作系统接口OS内核 内核主要组成 与硬件密切相关的操作 关键数据结构 基本中断处理程序 使用频繁的功能模块   内核的基本特点 常驻内存 可以理解成缓存，程序完成后仍保留在内存中，下次运行就不再需要从磁盘上读入内存   运行在核心态 内核程序运行在核心态      用户接口类型 命令接口 外部命令 如果一个命令对应一个独立的应用程序文件，这种命令称为外部命令   内部命令 由内核程序模块">
+<meta name="description" content="关于HashMap（下）关于HashMap源码（下） 在上篇关于HashMap（上)中我记录学习了散列表的实现、扰动函数、负载因子、扩容拆分，接下来开始记录学习HashMap的存储、删除、获取、遍历（会遇到我一直不大理解的红黑树，这篇文章做个梳理，加深理解） 首先，红黑树是在JDK1.8中引入到HashMap解决链表过长的问题，简单的说当链表长度大于等于8时，会将链表转化为红黑树（存在某些特殊情况">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OS第二章操作系统接口">
-<meta property="og:url" content="https://jitorun.top/2020/12/08/OS2/index.html">
+<meta property="og:title" content="关于HashMap（下)">
+<meta property="og:url" content="https://jitorun.top/2021/02/28/HashMap(%E4%BA%8C%EF%BC%89/index.html">
 <meta property="og:site_name" content="Jitorun&#39;s Blog">
-<meta property="og:description" content="第2章 操作系统接口OS内核 内核主要组成 与硬件密切相关的操作 关键数据结构 基本中断处理程序 使用频繁的功能模块   内核的基本特点 常驻内存 可以理解成缓存，程序完成后仍保留在内存中，下次运行就不再需要从磁盘上读入内存   运行在核心态 内核程序运行在核心态      用户接口类型 命令接口 外部命令 如果一个命令对应一个独立的应用程序文件，这种命令称为外部命令   内部命令 由内核程序模块">
+<meta property="og:description" content="关于HashMap（下）关于HashMap源码（下） 在上篇关于HashMap（上)中我记录学习了散列表的实现、扰动函数、负载因子、扩容拆分，接下来开始记录学习HashMap的存储、删除、获取、遍历（会遇到我一直不大理解的红黑树，这篇文章做个梳理，加深理解） 首先，红黑树是在JDK1.8中引入到HashMap解决链表过长的问题，简单的说当链表长度大于等于8时，会将链表转化为红黑树（存在某些特殊情况">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-12-08T11:10:41.328Z">
-<meta property="article:modified_time" content="2020-12-11T17:25:55.196Z">
+<meta property="article:published_time" content="2021-02-28T11:50:33.666Z">
+<meta property="article:modified_time" content="2021-02-28T11:51:08.209Z">
 <meta property="article:author" content="Jitorun">
-<meta property="article:tag" content="OS">
+<meta property="article:tag" content="HashMap">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://jitorun.top/2020/12/08/OS2/">
+<link rel="canonical" href="https://jitorun.top/2021/02/28/HashMap(%E4%BA%8C%EF%BC%89/">
 
 
 <script class="page-configurations">
@@ -49,7 +49,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>OS第二章操作系统接口 | Jitorun's Blog</title>
+<title>关于HashMap（下) | Jitorun's Blog</title>
   
 
 
@@ -160,7 +160,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AC%AC2%E7%AB%A0-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E6%8E%A5%E5%8F%A3"><span class="nav-number">1.</span> <span class="nav-text">第2章 操作系统接口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OS%E5%86%85%E6%A0%B8"><span class="nav-number">1.1.</span> <span class="nav-text">OS内核</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E6%8E%A5%E5%8F%A3%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">用户接口类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E5%90%AB%E4%B9%89"><span class="nav-number">1.3.</span> <span class="nav-text">系统调用含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E4%B8%8E%E7%94%A8%E6%88%B7%E5%AD%90%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%88%AB"><span class="nav-number">1.4.</span> <span class="nav-text">系统调用与用户子程序的主要区别</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EHashMap%EF%BC%88%E4%B8%8B%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">关于HashMap（下）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8EHashMap%E6%BA%90%E7%A0%81%EF%BC%88%E4%B8%8B%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">关于HashMap源码（下）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%85%A5"><span class="nav-number">1.2.</span> <span class="nav-text">插入</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%A1%A8%E6%A0%91%E5%8C%96"><span class="nav-number">1.2.1.</span> <span class="nav-text">链表树化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE"><span class="nav-number">1.3.</span> <span class="nav-text">查找</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">1.4.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">1.5.</span> <span class="nav-text">遍历</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -231,7 +231,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2020/12/08/OS2/">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2021/02/28/HashMap(%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -244,7 +244,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          OS第二章操作系统接口
+          关于HashMap（下)
         </h1>
 
         <div class="post-meta-container">
@@ -254,23 +254,17 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
+      
 
-      <time title="创建时间：2020-12-08 19:10:41" itemprop="dateCreated datePublished" datetime="2020-12-08T19:10:41+08:00">2020-12-08</time>
+      <time title="创建时间：2021-02-28 19:50:33 / 修改时间：19:51:08" itemprop="dateCreated datePublished" datetime="2021-02-28T19:50:33+08:00">2021-02-28</time>
     </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2020-12-12 01:25:55" itemprop="dateModified" datetime="2020-12-12T01:25:55+08:00">2020-12-12</time>
-      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">课程复习</span></a>
+          <a href="/categories/Java%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">Java学习</span></a>
         </span>
     </span>
 
@@ -291,62 +285,43 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="第2章-操作系统接口"><a href="#第2章-操作系统接口" class="headerlink" title="第2章 操作系统接口"></a>第2章 操作系统接口</h1><h2 id="OS内核"><a href="#OS内核" class="headerlink" title="OS内核"></a>OS内核</h2><ul>
-<li>内核主要组成<ul>
-<li>与硬件密切相关的操作</li>
-<li>关键数据结构</li>
-<li>基本中断处理程序</li>
-<li>使用频繁的功能模块</li>
+        <h1 id="关于HashMap（下）"><a href="#关于HashMap（下）" class="headerlink" title="关于HashMap（下）"></a>关于HashMap（下）</h1><h2 id="关于HashMap源码（下）"><a href="#关于HashMap源码（下）" class="headerlink" title="关于HashMap源码（下）"></a>关于HashMap源码（下）</h2><ul>
+<li>在上篇关于HashMap（上)中我记录学习了散列表的实现、扰动函数、负载因子、扩容拆分，接下来开始记录学习HashMap的存储、删除、获取、遍历（会遇到我一直不大理解的红黑树，这篇文章做个梳理，加深理解）</li>
+<li>首先，红黑树是在JDK1.8中引入到HashMap解决<strong>链表过长</strong>的问题，简单的说当链表长度大于等于8时，会将链表转化为红黑树（存在某些特殊情况，不一定会树化，**[MIN_TREEIFY_CAPACITY]**）</li>
+</ul>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><ul>
+<li>在上篇中，提到HashMap插入数据简单来讲就是通过Key值取得哈希再计算下标，然后存放进去，但这个过程会遇到一些问题<ul>
+<li>哈希计算下标碰撞怎么办?</li>
+<li>如果碰撞了是扩容数组还是把值存放成链表结构，让一个节点有多个值存放？</li>
+<li>如果存放的数组链表过长，就会失去散列表的性能，怎么办？</li>
+<li>想解决链表过长，什么时候使用树结构？哪种树？</li>
 </ul>
 </li>
-<li>内核的基本特点<ul>
-<li>常驻内存<ul>
-<li>可以理解成缓存，程序完成后仍保留在内存中，下次运行就不再需要从磁盘上读入内存</li>
-</ul>
-</li>
-<li>运行在核心态<ul>
-<li>内核程序运行在核心态</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="用户接口类型"><a href="#用户接口类型" class="headerlink" title="用户接口类型"></a>用户接口类型</h2><ul>
-<li>命令接口<ul>
-<li>外部命令<ul>
-<li>如果一个命令对应一个独立的应用程序文件，这种命令称为外部命令</li>
-</ul>
-</li>
-<li>内部命令<ul>
-<li>由内核程序模块实现的命令称为内部命令</li>
+<li>HashMap的插入流程如下<ul>
+<li>首先进行哈希值扰动，获取一个新的哈希值。**(key == null)? 0 : (h = key.hashCode())^(h&gt;&gt;&gt;16)**</li>
+<li>接下来判断tab是否为空或者长度为0，如果是则进行扩容操作  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>((tab=table)==<span class="keyword">null</span> ||(n = tab.length)==<span class="number">0</span>)</span><br><span class="line">    n = (tab = resize()).length;</span><br></pre></td></tr></table></figure></li>
+<li>根据哈希值计算下标，如果对应下标正好没存放数据，则直接插入，否则覆盖。<strong>tab[i=(n-1)&amp;hash]</strong></li>
+<li>判断tab[i]是否是树节点，是则向树中插入节点，否则向链表中插入数据</li>
+<li>如果链表中插入节点时，链表长度大于等于8，则需要把链表转换为红黑树。<strong>treeifyBin(tab,hash)</strong></li>
+<li>所有元素处理完后，判断是否超过阈值threshold，超过则扩容</li>
+<li><strong>关于treeifyBin</strong>：这是个链表转树的方法,不是所有链表长度为8后都为转为树，还需要判断存放key值得数组桶长度是否小于64<strong>MIN_TREEIFY_CAPACITY</strong>，小于则需要扩容，扩容后链表上的数据会被拆分散列的相应桶节点上，也就把链表长度缩短了</li>
 </ul>
 </li>
 </ul>
-</li>
-<li>程序接口<ul>
-<li><strong>程序接口是通过系统调用来实现的</strong></li>
+<h3 id="链表树化"><a href="#链表树化" class="headerlink" title="链表树化"></a>链表树化</h3><ul>
+<li>HashMap散列表数据结构最大性能可以O（1）时间复杂度定位到元素，而因为哈希碰撞而不得已采用链表来存放同坐标下多组数据，如果需要从链表中定位到数据时间复杂度为O（n），因此JDK1.8中把过长链表（8个）优化为自平衡的红黑树结构，这样优化时间复杂度为O(logn）</li>
 </ul>
-</li>
+<h2 id="查找"><a href="#查找" class="headerlink" title="查找"></a>查找</h2><ul>
+<li>扰动函数的使用，获取新的哈希值，与上面相同</li>
+<li>下标计算，<strong>tab[(n-1)&amp;hash]</strong></li>
+<li>确定了数组下标，接下来对红黑树和链表进行查找</li>
 </ul>
-<h2 id="系统调用含义"><a href="#系统调用含义" class="headerlink" title="系统调用含义"></a>系统调用含义</h2><ul>
-<li>系统调用含义<ul>
-<li>一组操作系统设计人员事先编写好的子程序，并作为内核的一部分</li>
-<li>程序员使用这组子程序的方法</li>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><ul>
+<li>删除的话与链表和树的删除相关</li>
 </ul>
-</li>
-<li>关于系统调用的实现过程<ul>
-<li>（1）处理器切换为核心态，保护用户程序的现场</li>
-<li>（2）分析功能号并在地址入口表中查找对应的子程序，有时还需要进行安全控制检查</li>
-<li>（3）执行系统调用的子程序并得到结果</li>
-<li>（4）现场恢复，处理器切换为用户态并返回结果，必要时进行安全检查</li>
-</ul>
-</li>
-</ul>
-<h2 id="系统调用与用户子程序的主要区别"><a href="#系统调用与用户子程序的主要区别" class="headerlink" title="系统调用与用户子程序的主要区别"></a>系统调用与用户子程序的主要区别</h2><ul>
-<li>系统调用运行在核心态，而用户子程序运行在用户态</li>
-<li>系统调用的执行产生中断，用户子程序的运行则不会产生中断</li>
-<li>系统调用子程序的代码与调用者的程序代码是分开独立的，而用户子程序代码与调用者的程序代码在同一个进程地址空间</li>
-<li>不同用户程序可以共享使用同一个系统调用，用户子程序通常不能由其他用户程序调用</li>
+<h2 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h2><ul>
+<li>KeySet</li>
+<li>EntrySet</li>
 </ul>
 
     </div>
@@ -357,21 +332,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/OS/" rel="tag"># OS</a>
+              <a href="/tags/HashMap/" rel="tag"># HashMap</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/12/08/OS1/" rel="prev" title="OS第一章引论">
-                  <i class="fa fa-chevron-left"></i> OS第一章引论
+                <a href="/2021/02/28/HashMap(%E4%B8%80%EF%BC%89/" rel="prev" title="关于HashMap（上)">
+                  <i class="fa fa-chevron-left"></i> 关于HashMap（上)
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2020/12/08/OS3/" rel="next" title="OS第三章进程管理">
-                  OS第三章进程管理 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
