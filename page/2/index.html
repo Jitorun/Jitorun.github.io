@@ -171,14 +171,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -218,6 +218,208 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://jitorun.top/2020/12/12/OS6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jitorun">
+      <meta itemprop="description" content="Vegetable chicken">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jitorun's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/12/12/OS6/" class="post-title-link" itemprop="url">OS第六章文件管理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2020-12-12 19:50:22 / 修改时间：20:35:46" itemprop="dateCreated datePublished" datetime="2020-12-12T19:50:22+08:00">2020-12-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%A4%8D%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">课程复习</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="第6章-文件管理"><a href="#第6章-文件管理" class="headerlink" title="第6章 文件管理"></a>第6章 文件管理</h1><h2 id="文件系统的主要功能"><a href="#文件系统的主要功能" class="headerlink" title="文件系统的主要功能"></a>文件系统的主要功能</h2><ul>
+<li>文件内容的组织<ul>
+<li>文件内容的组织形式分为文件的逻辑结构和物理结构</li>
+<li>逻辑结构侧重方便用户使用</li>
+<li>物理结构侧重提高存储空间的利用率与存取速度</li>
+</ul>
+</li>
+<li>文件和目录管理</li>
+<li>文件存储空间管理</li>
+<li>文件系统的接口</li>
+<li>文件的共享与安全性</li>
+</ul>
+<h2 id="文件逻辑结构的分类"><a href="#文件逻辑结构的分类" class="headerlink" title="文件逻辑结构的分类"></a>文件逻辑结构的分类</h2><ul>
+<li>流式文件<ul>
+<li>文件内容按用户提供的数据顺序，以字符流方式组织，没有对内容进行结构上的划分</li>
+</ul>
+</li>
+<li>记录式文件<ul>
+<li>以数据在逻辑上的完整性含义为单位划分文件内容，每个单位称为一个逻辑记录，简称记录，记录式文件的文件内容是若干个记录的有序集合</li>
+</ul>
+</li>
+</ul>
+<h2 id="三类文件物理结构及其主要特点"><a href="#三类文件物理结构及其主要特点" class="headerlink" title="三类文件物理结构及其主要特点"></a>三类文件物理结构及其主要特点</h2><ul>
+<li>连续结构<ul>
+<li>也称顺序结构，对于一个文件的所有记录，系统按照记录顺序，将它们存放在依次相邻的物理块上，创建或保存一个文件时，系统根据文件的记录数，从外存中查找块数不少于文件记录数的连续空闲物理块</li>
+<li>特点<ul>
+<li>管理简单</li>
+<li>存取速度快</li>
+<li>存储空间连续分配，存储空间利用率不高</li>
+<li>不方便文件内容的增加或删除</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>链接结构<ul>
+<li>指定物理块的一个固定存储单元，例如每个块最后一个存储单元，作为链表的指针，指向同一个文件内容存储的下一个物理块，并规定指针为空表示该文件的物理块链表结束</li>
+<li>特点<ul>
+<li>非连续的存储分配，提高了存储空间的利用率</li>
+<li>方便文件内容的增加或删除</li>
+<li>只适合顺序存取，存取速度慢</li>
+<li>指针信息造成物理块信息不完整，并导致数据无法控制</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>索引结构<ul>
+<li>类似分页存储管理的页表一样，为外存储器上每一个文件建立一个索引表，登记了该文件的各个记录号（或主键）与物理块的对应关系</li>
+<li>特点<ul>
+<li>非连续的存储分配，提高了存储空间的利用率</li>
+<li>方便文件内容的增加或删除</li>
+<li>实现随机存取</li>
+<li>索引表占用额外的存储空间</li>
+<li>增加检索的开销</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="UNIX多级索引结构"><a href="#UNIX多级索引结构" class="headerlink" title="UNIX多级索引结构"></a>UNIX多级索引结构</h2><ul>
+<li>UNIX把索引表分成4级，称为多级索引结构</li>
+<li>UNIX中，每个文件都有一个数据结构，称为i-node，在i-node中定义了13个表项，记为i_addr[0]、i_addr[1]、…、i_addr[12]<ul>
+<li>其中i_addr[0]~i_addr[9]的10个表项称为直接索引表</li>
+<li>i_addr[10]为一次间接指针，指向保存一次间接索引表的物理块</li>
+<li>i_addr[11]为二次间接指针，指向保存二次间接索引表的物理块</li>
+<li>i_addr[12]为三次间接指针，指向保存三次间接索引表的物理块</li>
+</ul>
+</li>
+<li>假定物理块长度为4KB，每个物理块号用4B表示<ul>
+<li>这样对于直接索引表等级文件内容存储的前十个物理块，对于文件内容不超过40KB的小文件，只需要i-node直接索引表的10个表项就可以了</li>
+<li>当文件内容超40KB时，使用一次间接索引表，一次间接索引表保存文件内容占用的各个物理块号，一个表项表示一个物理块号，占4B，所以一次间接索引表可以表示4KB/4B=1K即1024物理块，文件内容合计为4KB X 1024=4MB，在文件长度超过40KB而小于或等于40KB+4MB时，利用直接索引表和一次间接索引表可以实现对文件的管理</li>
+<li>同理，二级索引表就是4GB，三级为4TB</li>
+</ul>
+</li>
+<li><strong>理论上最大可达40KB+4MB+4GB+4TB（针对上述数据）</strong></li>
+</ul>
+<h2 id="二级目录结构及访问过程"><a href="#二级目录结构及访问过程" class="headerlink" title="二级目录结构及访问过程"></a>二级目录结构及访问过程</h2><ul>
+<li>二级目录结构把目录分为两级：用户文件目录(UFD)和系统主目录(MFD)</li>
+<li>访问过程<ul>
+<li>按照用户名查找系统主目录，得到用户文件目录，接着按照文件名查找用户文件目录，得到文件的FCB，从而得到文件在外存中的存储位置</li>
+</ul>
+</li>
+</ul>
+<h2 id="树状目录结构、根目录、路径含义"><a href="#树状目录结构、根目录、路径含义" class="headerlink" title="树状目录结构、根目录、路径含义"></a>树状目录结构、根目录、路径含义</h2><ul>
+<li>根目录<ul>
+<li>根目录由系统自动建成，用户不能创建或删除</li>
+</ul>
+</li>
+<li>现代操作系统都支持树状目录结构</li>
+<li>“.”和”..”分别表示当前目录及其父目录</li>
+</ul>
+<h2 id="文件保护、保密的含义及基于主体权限的存取控制方式"><a href="#文件保护、保密的含义及基于主体权限的存取控制方式" class="headerlink" title="文件保护、保密的含义及基于主体权限的存取控制方式"></a>文件保护、保密的含义及基于主体权限的存取控制方式</h2><ul>
+<li>文件保护<ul>
+<li>含义<ul>
+<li>防止文件内容被破坏，这种破坏指存储介质的物理损坏导致文件内容无法读取和用户的误操作造成文件内容的丢失</li>
+</ul>
+</li>
+<li>措施<ul>
+<li>备份与恢复两种措施</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>文件保密<ul>
+<li>含义<ul>
+<li>文件保密是对文件存取的控制，防止文件的非法访问</li>
+</ul>
+</li>
+<li><strong>文件系统安全的核心是实现文件的保密</strong></li>
+</ul>
+</li>
+<li>基于主体权限的存取控制方式<ul>
+<li>根据主体对客体所拥有的访问属性而进行存取控制，因此属于自主访问策略（DAC)</li>
+<li>主体权限的管理方法主要由三种：存取控制矩阵(PM)，访问控制表(ACL)，权能表(CL)</li>
+<li>存取控制矩阵<ul>
+<li>行表示主体，列表示客体</li>
+<li>存取控制矩阵中可能存在大量的空元素或0</li>
+</ul>
+</li>
+<li>存取控制表<ul>
+<li>是存取控制矩阵的一种简化，为每个客体按列建立一个列表，用于登记可访问的各个用户及其访问属性</li>
+</ul>
+</li>
+<li>权能表<ul>
+<li>是存取控制矩阵的另一种简化，每个主体按行建立一个列表</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
